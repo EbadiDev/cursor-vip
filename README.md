@@ -27,7 +27,7 @@ Method 2: Install via Gitee script
 bash <(curl -Lk https://gitee.com/kingparks/cursor-vip/releases/download/latest/ic.sh) githubReadme
 ```
 Method 3: Manually download the binary file
-> download the binary file for the corresponding operating system from the [release](https://github.com/kingparks/cursor-vip/releases) page
+> download the binary file for the corresponding operating system from the [release](https://github.com/EbadiDev/cursor-vip/releases) page
  ```shell
 # MaxOS/Linux (linux binary installation also requires additional execution of the content of i.sh)
 sudo mv cursor-vip_xx_xxx /usr/local/bin/cursor-vip;
@@ -76,10 +76,10 @@ Enjoy cursor-vip:
 
 ---
 ### Star History
-<a href="https://star-history.com/#kingparks/cursor-vip&Date">
+<a href="https://star-history.com/#EbadiDev/cursor-vip&Date">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=kingparks/cursor-vip&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=kingparks/cursor-vip&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=kingparks/cursor-vip&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=EbadiDev/cursor-vip&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=EbadiDev/cursor-vip&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=EbadiDev/cursor-vip&type=Date" />
  </picture>
 </a>
