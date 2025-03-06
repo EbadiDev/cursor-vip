@@ -74,10 +74,19 @@ if [[ $os_name == "darwin" || $os_name == "linux" ]]; then
   sudo curl -Lko /usr/local/bin/cursor-vip ${url}/cursor-vip_${os_name}_${hw_name}
   sudo chmod +x /usr/local/bin/cursor-vip
 
-  # linux 系统，接收用户输入 cursor.AppImage 文件路径，进行 --appimage-extract 操作生成 squashfs-root 目录；
-  # 进入 squashfs-root 目录，执行 sudo chown -R root:root usr/share/cursor/chrome-sandbox ,执行 sudo chmod 4755 usr/share/cursor/chrome-sandbox
-  # 回退到 squashfs-root 目录上一级，将 squashfs-root 移动到 ~/cursor
+  # linux 系统，接收用户输入 cursor.AppImage 文件路径，进行 --appimage-extract 操作生成 squashfs-root 目录
   if [[ $os_name == "linux" ]]; then
+    # 检测是否为Arch Linux
+    is_arch=false
+    if [ -f "/etc/arch-release" ] || grep -q "Arch Linux" /etc/os-release 2>/dev/null; then
+      is_arch=true
+      if [ "$lc_type" = "zh" ]; then
+        echo "检测到 Arch Linux 系统"
+      else
+        echo "Detected Arch Linux system"
+      fi
+    fi
+
     if [ "$lc_type" = "zh" ]; then
       echo "请输入 cursor-xxx.AppImage 文件路径"
     else
@@ -101,11 +110,35 @@ if [[ $os_name == "darwin" || $os_name == "linux" ]]; then
     sudo rm -rf ./squashfs-root;
     ./$appimage_name --appimage-extract;
     cd squashfs-root;
+    
+    if [ "$is_arch" = true ]; then
+      # For Arch Linux, adjust the directory structure if needed
+      if [ -d "usr/share/cursor" ] && [ ! -d "resources" ]; then
+        sudo mkdir -p resources/app/out
+        # Copy necessary files from usr/share/cursor to resources/app/out
+        if [ -d "usr/share/cursor/resources/app/out" ]; then
+          sudo cp -r usr/share/cursor/resources/app/out/* resources/app/out/
+        fi
+      fi
+    fi
+    
     sudo chown -R root:root usr/share/cursor/chrome-sandbox > /dev/null 2>&1 || true;
     sudo chmod 4755 usr/share/cursor/chrome-sandbox > /dev/null 2>&1 || true;
     cd ..;
     rm -rf ~/cursor;
     mv squashfs-root ~/cursor;
+    
+    # Create symbolic links for Arch Linux if needed
+    if [ "$is_arch" = true ]; then
+      if [ ! -d "/home/arch/cursor/resources/app/out" ]; then
+        mkdir -p ~/cursor/resources/app/out
+      fi
+      # Link main.js to the correct location if it exists in usr/share/cursor
+      if [ -f "~/cursor/usr/share/cursor/resources/app/out/main.js" ] && [ ! -f "~/cursor/resources/app/out/main.js" ]; then
+        ln -sf ~/cursor/usr/share/cursor/resources/app/out/main.js ~/cursor/resources/app/out/main.js
+      fi
+    fi
+    
     if [ "$lc_type" = "zh" ]; then
       echo "跳过登录后关闭 cursor"
     else

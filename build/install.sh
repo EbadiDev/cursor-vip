@@ -61,6 +61,17 @@ fi
 
 # 如果是mac或者linux系统
 if [[ $os_name == "darwin" || $os_name == "linux" ]]; then
+  # 检测是否为Arch Linux
+  is_arch=false
+  if [ -f "/etc/arch-release" ] || grep -q "Arch Linux" /etc/os-release 2>/dev/null; then
+    is_arch=true
+    if [ "$lc_type" = "zh" ]; then
+      echo "检测到 Arch Linux 系统"
+    else
+      echo "Detected Arch Linux system"
+    fi
+  fi
+
   if [ "$lc_type" = "zh" ]; then
     echo "请输入开机密码"
   else
@@ -72,6 +83,15 @@ if [[ $os_name == "darwin" || $os_name == "linux" ]]; then
   sudo mkdir -p /usr/local/bin
   sudo curl -Lko /usr/local/bin/cursor-vip ${url}/cursor-vip_${os_name}_${hw_name}
   sudo chmod +x /usr/local/bin/cursor-vip
+  
+  # 为 Arch Linux 创建正确的目录结构和符号链接
+  if [ "$is_arch" = true ]; then
+    if [ -d "/home/arch/cursor/usr/share/cursor/resources/app/out" ] && [ ! -d "/home/arch/cursor/resources/app/out" ]; then
+      sudo mkdir -p /home/arch/cursor/resources/app/out
+      sudo ln -sf /home/arch/cursor/usr/share/cursor/resources/app/out/main.js /home/arch/cursor/resources/app/out/main.js
+    fi
+  fi
+  
   if [ "$lc_type" = "zh" ]; then
     echo "安装完成！自动运行；下次可直接输入 cursor-vip 并回车来运行程序"
   else
@@ -81,6 +101,7 @@ if [[ $os_name == "darwin" || $os_name == "linux" ]]; then
   echo ""
   cursor-vip
 fi;
+
 # 如果是windows系统
 if [[ $os_name == "windows" ]]; then
   # 停掉正在运行cursor-vip
