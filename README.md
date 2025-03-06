@@ -20,7 +20,7 @@ Open the terminal on MacOS/Linux; Open Git Bash on Windows(If you don't have Git
 
 Method 1: Install via GitHub script
 ```bash
-bash <(curl -Lk https://github.com/kingparks/cursor-vip/releases/download/latest/i.sh) githubReadme
+bash <(curl -Lk https://github.com/EbadiDev/cursor-vip/releases/download/latest/i.sh) githubReadme
 ```
 Method 2: Install via Gitee script
 ```bash
